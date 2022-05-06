@@ -1,0 +1,103 @@
+logger:
+
+metrics-tool:
+
+events:
+
+order-verifier:
+
+gw-authorizer:
+
+test-framework:
+
+event-producer:
+  - logger
+  - metrics-tool
+
+auth-adapter:
+  - logger
+  - metrics-tool
+  - event-producer
+
+credentials-provider:
+  - logger
+  - metrics-tool
+  - event-producer
+  - auth-adapter
+
+fraud-prevention-actor:
+  - logger
+  - event-producer
+  - credentials-provider
+  - auth-adapter
+  - order-verifier
+  - gw-authorizer
+
+checkout-producer:
+  - logger
+  - event-producer
+  - credentials-provider
+  - auth-adapter
+  - metrics-tool
+
+event-consumer:
+  - event-producer
+  - events
+
+user-events-consumer:
+  - event-consumer
+  - test-framework
+
+stock-updates-consumer:
+  - event-consumer
+  - test-framework
+
+inventory-events-consumer:
+  - event-consumer
+  - test-framework
+
+k8s-notifications-consumer:
+  - event-consumer
+  - test-framework
+
+payment-events-consumer:
+  - event-consumer
+  - test-framework
+
+messaging-consumer:
+  - event-consumer
+  - test-framework
+
+gw-events-consumer:
+  - event-consumer
+  - test-framework
+
+control-plane-adapter:
+  - gw-authorizer
+  - event-producer
+  - events
+
+storage-status:
+  - event-consumer
+  - test-framework
+
+data-change-aggregator:
+  - event-consumer
+  - test-framework
+
+jobs-scheduler:
+  - event-consumer
+  - test-framework
+  - gw-authorizer
+
+failure-recovery-actor:
+  - event-consumer
+  - test-framework
+
+key-value-storer:
+  - event-consumer
+  - test-framework
+
+data-planner:
+  - event-consumer
+  - test-framework

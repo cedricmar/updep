@@ -1,0 +1,13 @@
+logger:
+dep1:
+events:
+  - logger
+  - dep2
+dep2:
+  - logger
+  - dep1
+  - events
+dep3:
+  - logger
+  - events
+  - dep2
