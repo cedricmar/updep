@@ -33,7 +33,11 @@ func Update(f Flags) {
 	}
 
 	// Building the update plan
-	plan := planner.Plan(tag.Key, g)
+	plan, err := planner.Plan(tag.Key, g)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not plan the update: %s\n\n", err)
+		os.Exit(1)
+	}
 
 	// Dry run?
 	if *f.Info {
