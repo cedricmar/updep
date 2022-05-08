@@ -1,7 +1,17 @@
 package repos
 
-import "github.com/cedricmar/updep/pkg/depgraph"
+import "io"
+
+// DepStorer serves as a registry/cache for repositories informations
+// We use it to rebuild the Dependency Graph
+type DepStorer interface {
+	io.ReadWriter
+}
+
+type DepEntry struct {
+	Name, Version, Lang string
+}
 
 type RepositoryAdapter interface {
-	depgraph.GraphBuilder
+	UpdateDepRegistry(reg DepStorer) error
 }

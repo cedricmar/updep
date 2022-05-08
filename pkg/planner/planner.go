@@ -6,7 +6,7 @@ import (
 
 	"github.com/cedricmar/updep/pkg/cli/color"
 	"github.com/cedricmar/updep/pkg/depgraph"
-	"github.com/cedricmar/updep/pkg/tag"
+	"github.com/cedricmar/updep/pkg/tagger"
 )
 
 type step []string
@@ -40,7 +40,7 @@ func Plan(key string, g depgraph.Graph) ([]step, error) {
 	// We need to reverse the dependency graph to traverse it
 	gr := g.Reverse()
 
-	t, _ := tag.NewTag(key)
+	t, _ := tagger.NewTag(key)
 
 	conv := converter{
 		deps:  gr,

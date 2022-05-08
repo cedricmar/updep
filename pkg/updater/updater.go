@@ -52,7 +52,7 @@ func Update(f Flags) {
 
 	fmt.Fprintf(os.Stdout, "[%s] %s\n", tnum, tname)
 
-	// - Prompt for MR name (derive the branch name from this)
+	// - Prompt for PR name (derive the branch name from this)
 	//
 	// FOR deps in this step:
 	//     1) Clone and cd into the folder

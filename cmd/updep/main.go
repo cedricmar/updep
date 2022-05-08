@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cedricmar/updep/pkg/tag"
+	"github.com/cedricmar/updep/pkg/tagger"
 	"github.com/cedricmar/updep/pkg/updater"
 )
 
@@ -24,7 +24,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	t, err := tag.NewTag(args[0])
+	t, err := tagger.NewTag(args[0])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n\n", err)
 		flag.Usage()
