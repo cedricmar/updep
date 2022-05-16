@@ -1,31 +1,81 @@
 package github
 
 import (
-	"github.com/cedricmar/updep/pkg/repos"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"net/http"
 )
 
-type GithubAdapter struct{}
+// GetOrganizations returns the
+func (gh *GithubAdapter) GetOrganizations() (orgs []Organization, err error) {
+	// GET /organizations
+	r, err := gh.httpGet("/organizations", &orgs)
+	if err != nil {
+		return
+	}
 
-func (g GithubAdapter) UpdateDepRegistry(reg repos.DepStorer) error {
-	// @TODO - implement
+	if _, ok := r.([]Organization); ok {
+		err = errors.New("wrong type for organizations")
+		return
+	}
 
-	// IF .config has an ORG (or several)
+	return
+}
 
-	// List organization repositories
+func (gh *GithubAdapter) GetOrgRepositories(org string) (repos []Repository, err error) {
 	// GET /orgs/{org}/repos
-	// https://docs.github.com/en/rest/repos/repos#list-organization-repositories
+	url := fmt.Sprintf("/orgs/%s/repos", org)
+	r, err := gh.httpGet(url, &repos)
+	if err != nil {
+		return
+	}
 
-	// ELSE
+	if _, ok := r.([]Repository); ok {
+		err = errors.New("wrong type for repositories")
+		return
+	}
 
-	// List repositories for the authenticated user
+	return
+}
+func (gh *GithubAdapter) GetRepositories() (repos []Repository, err error) {
 	// GET /user/repos
-	// https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
+	r, err := gh.httpGet("/user/repos", &repos)
+	if err != nil {
+		return
+	}
 
-	// FOR all repositories
+	if _, ok := r.([]Repository); ok {
+		err = errors.New("wrong type for repositories")
+		return
+	}
 
-	// We need to figure out in which language it is written
-	// Then we get its version (tag)
-	// With these informations we update the Registry record for this repo
+	return
+}
 
-	return nil
+func (gh *GithubAdapter) httpGet(url string, ret interface{}) (interface{}, error) {
+	req, err := http.NewRequest(http.MethodGet, UrlBase+url, nil)
+	if err != nil {
+		return ret, err
+	}
+	req.Header.Set("Accept", HeaderAccept)
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return ret, err
+	}
+	defer res.Body.Close()
+
+	dat, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return ret, err
+	}
+
+	err = json.Unmarshal(dat, ret)
+	if err != nil {
+		return ret, err
+	}
+
+	return ret, err
 }

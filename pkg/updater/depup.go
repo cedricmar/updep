@@ -3,10 +3,10 @@ package updater
 import (
 	"fmt"
 
-	"github.com/cedricmar/updep/pkg/tag"
+	"github.com/cedricmar/updep/pkg/tagger"
 )
 
-func DepUpdate(t tag.Tag) error {
+func DepUpdate(t tagger.Tag) error {
 	// @TODO - find the type somehow
 	kind := "go"
 	// Go
@@ -20,10 +20,10 @@ func DepUpdate(t tag.Tag) error {
 	return fmt.Errorf("no strategy found to update %s", t.Key)
 }
 
-func goUp(t tag.Tag) error {
+func goUp(t tagger.Tag) error {
 	return nil
 }
 
-func javaUp(t tag.Tag) error {
+func javaUp(t tagger.Tag) error {
 	return nil
 }

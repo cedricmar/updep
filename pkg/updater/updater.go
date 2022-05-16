@@ -8,7 +8,7 @@ import (
 	"github.com/cedricmar/updep/pkg/cli"
 	"github.com/cedricmar/updep/pkg/planner"
 	"github.com/cedricmar/updep/pkg/repos/github"
-	"github.com/cedricmar/updep/pkg/tag"
+	"github.com/cedricmar/updep/pkg/tagger"
 )
 
 // @TODO - move elsewhere
@@ -19,7 +19,7 @@ const (
 
 type Flags struct {
 	Info *bool
-	Tag  tag.Tag
+	Tag  tagger.Tag
 }
 
 func Update(f Flags) {
